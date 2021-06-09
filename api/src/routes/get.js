@@ -1,16 +1,15 @@
 
 const { Router, response } = require('express');
 require('dotenv').config();
-const fetch = require('node-fetch');
-const { getFirst12 } = require('../controlers/get');
-const { Pokemon, Type } = require('../db');
-const { Op } = require('sequelize');
+
+const { getFirst12, getPokeApiId } = require('../controlers/get');
+
 // const { types } = require('pg');
 //const { route } = require('.');
 
-console.log(getFirst12)
 const router = Router();
 
+router.get('/:id', getPokeApiId);
 router.get('/', getFirst12);
 // router.get('/', async (req, res) => {
 //     const data = []
