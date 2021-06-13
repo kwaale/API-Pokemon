@@ -1,0 +1,13 @@
+.card-pokemon{
+    background: yellow;
+    width: 40%;
+    height: auto;
+    border-radius: 10%;
+    border: solid 2px;
+    padding: 5px;
+    margin: 5px;
+}
+.image{
+    width: 50%;
+    height: auto;
+}
