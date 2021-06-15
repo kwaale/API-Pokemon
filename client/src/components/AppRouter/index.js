@@ -15,11 +15,11 @@ const AppRouter = () => {
                 <Route path="*" component={Nav} />
             <Switch>
                 {/* <Route path="/countries/:id" component={CountryDetail} /> */}
-                <Route path="/pokemons">
+                <Route path="/pokemons/create" component={FormCreaPokemon} />
+                <Route path="/pokemons/">
                     <Search/>
                     <Pokemons/>
                 </Route>
-                <Route path="/activity/create" component={FormCreaPokemon} />
                 <Route path="/" component={ButtonHome} />
                 {/* <Route path="/pokemons" component={ButtonHome} /> */}
                 <Route path="*"><h1>Error 404 crear componente</h1></Route>

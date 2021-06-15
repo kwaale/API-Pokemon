@@ -8,15 +8,16 @@ const { Op } = require('sequelize');
 
 const router = Router();
 console.log('Pasa post.js')
-router.post('/', async (req, res) => {
-    const { name, life, type, strong, defense, speed, height, weight, img } = req.body;
+router.post('/create', async (req, res) => {
+    console.log('Req.body',req.body)
+    const { name, life, types, strong, defense, speed, height, weight, img } = req.body;
     const [pokemon] = await Pokemon.findOrCreate({
         where:{
             name
         },
         defaults: { name, life, strong, defense, speed, height, weight, img },
     });
-    type.forEach(async (name)=>{
+    types.forEach(async (name)=>{
         const [type] = await Type.findOrCreate({
             where:{
                 name

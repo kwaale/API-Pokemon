@@ -1,8 +1,9 @@
-import { GET_POKEMONS_12, GET_ALL_TYPES } from '../actions/pokemonActions';
+import { GET_POKEMONS_12, GET_ALL_TYPES, GET_POKEMON } from '../actions/pokemonActions';
 
 const initialState ={
     pokemons:[],
-    types:[]
+    types:[],
+    pokemon:{}
 }
 
 const reducer = (state = initialState, action) =>{
@@ -17,6 +18,12 @@ const reducer = (state = initialState, action) =>{
         return{
             ...state,
             types:action.payload
+        }
+        case GET_POKEMON:
+            // console.log('Entra en redudcer get pokemon action payload', action.payload)
+        return{
+            ...state,
+            pokemon:action.payload
         }
         default:
             return{...state}

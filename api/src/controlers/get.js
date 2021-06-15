@@ -9,26 +9,51 @@ const { response } = require('express');
 /*Devuelve un solo pokemon                              */
 /**********************************************************/
 const getPokemonApi = async (req, res) => {
-    console.log('getPokemonApi')
+    // console.log('getPokemonApi')
     const { id } = req.params;
     const { name } = req.query;
-    console.log('Aqui name',name)
-    console.log('Aqui id',id)
+    // console.log('Aqui name',name)
+    // console.log('Aqui id',id)
     if (id && id) {
         const data = await getPokeApiFetch(id);
         if(data ==='Not found'){
-            console.log('Buscamos DB id')
-            const pokemon = await Pokemon.findOne({where:{id}})
+            // console.log('Buscamos DB id')
+            let pokemon = await Pokemon.findOne({where:{id},include:Type})
+            pokemon = {
+                id:pokemon.id,
+                name:pokemon.name,
+                life:pokemon.life,
+                strong:pokemon.strong,
+                defense:pokemon.defense,
+                speed:pokemon.speed,
+                height:pokemon.height,
+                weight:pokemon.weight,
+                img:pokemon.img,
+                types:pokemon.types.map(t=>t.name)
+            }
             return res.send(pokemon);
         }
         return res.send(data);
     }
     if(name && name){
-        console.log('entra en if name',name)
+        // console.log('entra en if name',name)
         const data = await getPokeApiFetch(name);
         if(data ==='Not found'){
-            console.log('Buscamos DB name')
-            const pokemon = await Pokemon.findOne({where:{name}})
+            // console.log('Buscamos DB name')
+            let pokemon = await Pokemon.findOne({where:{name},include:Type})
+            pokemon = {
+                id:pokemon.id,
+                name:pokemon.name,
+                life:pokemon.life,
+                strong:pokemon.strong,
+                defense:pokemon.defense,
+                speed:pokemon.speed,
+                height:pokemon.height,
+                weight:pokemon.weight,
+                img:pokemon.img,
+                types:pokemon.types.map(t=>t.name)
+            }
+            // console.log(pokemon)
             return res.send(pokemon);
         }
         return res.send(data);

@@ -1,78 +1,93 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAllTypes } from '../../store/actions/pokemonActions';
 import { connect } from 'react-redux';
 
-const FormCreaPokemon = ({getAllTypes, types})=>{
+const FormCreaPokemon = ({ getAllTypes, types }) => {
     useEffect(() => {
         getAllTypes()
     }, []);
-
-    const [formState, setFormState] = useState({
-        nombre:'',
-        vida:'',
-        fuerza:'',
-        defensa:'',
-        velocidad:'',
-        altura:'',
-        peso:'',
-        types:[],
-    });
-    const handleChange = (e)=>{
+    const initialStateForm = {name: '', life: '', strong: '', defense: '', speed: '',
+    height: '', weight: '', types: [], img: ''}
+    const [formState, setFormState] = useState(initialStateForm);
+    const handleChange = (e) => {
         e.preventDefault()
         const name = e.target.name;
         const value = e.target.value;
-        if(name === 'types'){
+        if (name === 'types') {
             formState.types.includes(value) ?
-            setFormState({...formState,
-                types:[...formState.types.filter(element=>element !== value)]
-            }) :
-            setFormState({...formState,
-                types:[...formState.types, value]
-            });
-        }else{
+                setFormState({
+                    ...formState,
+                    types: [...formState.types.filter(element => element !== value)]
+                }) :
+                setFormState({
+                    ...formState,
+                    types: [...formState.types, value]
+                });
+        } else {
             setFormState({
                 ...formState,
-                [name]:value
+                [name]: value
             });
         }
     }
-    const handleSubmit = (e)=>{
+    const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('Submit',formState)
+        postPokemon()
+        setFormState(initialStateForm)
     }
-    return(
+    const postPokemon = async() => {
+        await fetch('http://localhost:3001/pokemons/create',{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formState)
+        });
+    }
+    const handleTypes = (e)=>{
+        e.preventDefault();
+        setFormState({
+            ...formState,
+            types:formState.types.filter(type=>type !== e.target.id)
+        })
+    }
+    return (
 
         <div>
             <h1>Crea tu Pokemon</h1>
             <form onSubmit={handleSubmit}>
                 <dt><label>Nombre:</label>
-                    <input placeholder='Nombre...' name='nombre' onChange={handleChange}></input></dt>
+                    <input placeholder='Nombre...' name='name' onChange={handleChange} value={formState.name}></input></dt>
                 <dt><label>Vida:</label>
-                    <input placeholder='Vida...' name='vida' onChange={handleChange}></input></dt>
+                    <input placeholder='Vida...' name='life' onChange={handleChange} value={formState.life}></input></dt>
                 <dt><label>Fuerza:</label>
-                    <input placeholder='Fuerza...' name='fuerza' onChange={handleChange}></input></dt>
+                    <input placeholder='Fuerza...' name='strong' onChange={handleChange} value={formState.strong}></input></dt>
                 <dt><label>Defensa:</label>
-                    <input placeholder='Defensa...' name='defensa' onChange={handleChange}></input></dt>
+                    <input placeholder='Defensa...' name='defense' onChange={handleChange} value={formState.defense}></input></dt>
                 <dt><label>Velocidad:</label>
-                    <input placeholder='Velocidad...' name='velocidad' onChange={handleChange}></input></dt>
+                    <input placeholder='Velocidad...' name='speed' onChange={handleChange} value={formState.speed}></input></dt>
                 <dt><label>Altura:</label>
-                    <input placeholder='Altura...' name='altura' onChange={handleChange}></input></dt>
+                    <input placeholder='Altura...' name='height' onChange={handleChange} value={formState.height}></input></dt>
                 <dt><label>Peso:</label>
-                    <input placeholder='Peso...' name='peso' onChange={handleChange}></input></dt>
+                    <input placeholder='Peso...' name='weight' onChange={handleChange} value={formState.weight}></input></dt>
                 <dt><label>Tipos:</label>
-                <select name='types' onChange={handleChange}>
-                    {types.map(t=>{
-                        return(
-                            <option value={t}>{t.toUpperCase()}</option>
-                        )
-                    })}
+                    <select name='types' onChange={handleChange}>
+                        {types.map(t => {
+                            return (
+                                <option value={t}>{t.toUpperCase()}</option>
+                            )
+                        })}
                     </select>
-                    </dt>
-                    {formState.types.map(t=>{
-                        return(
-                            <li>{t.toUpperCase()}</li>
-                        )
-                    })}
+                </dt>
+                {formState.types.map(t => {
+                    return (
+                        <button onClick={handleTypes} id={t}>{t.toUpperCase()}</button>
+                    )
+                })}
+{/* Para colocar imagen */}
+                {/* <dt><label>Imagen:</label>
+                    <input placeholder='Peso...' name='img' onChange={handleChange}></input></dt> */}
+
                 <dt><button type='onSubmit'>Submit</button></dt>
             </form>
         </div>
@@ -80,7 +95,7 @@ const FormCreaPokemon = ({getAllTypes, types})=>{
 
 }
 const mapStateToProps = state => {
-    console.log('mapStateToProps state',state)
+    console.log('mapStateToProps state', state)
     return {
         types: state.types
     }

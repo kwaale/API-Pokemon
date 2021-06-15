@@ -7,12 +7,14 @@ import { connect } from 'react-redux';
 
 
 const Pokemons = ({ getPokemons_12, pokemons }) => {
+    
     useEffect(() => {
         console.log('A dentro de useEffect')
         getPokemons_12()
     }, []);
     return (
         <div>
+            <h1>Componente Pokemon</h1>
             {
                 pokemons.map(pokemon => {
                     return (

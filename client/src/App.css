@@ -12,6 +12,13 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+/* /home/knut/HenryR/PI-Pokemon/pokemon.png */
+body{
+  background: cadetblue;
+  background-image: url("img/pokeball.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 
 .App-header {
   background-color: #282c34;
