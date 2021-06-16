@@ -5,62 +5,40 @@ const { response } = require('express');
 
 /**********************************************************/
 /*                        DB y API                        */
-/*Busca por Id o name                                    */
-/*Devuelve un solo pokemon                              */
+/*                   Busca por Id o Name                  */
+/*          Devuelve un solo pokemon / Not Found          */
 /**********************************************************/
 const getPokemonApi = async (req, res) => {
-    // console.log('getPokemonApi')
-    const { id } = req.params;
-    const { name } = req.query;
-    // console.log('Aqui name',name)
-    // console.log('Aqui id',id)
-    if (id && id) {
-        const data = await getPokeApiFetch(id);
-        if(data ==='Not found'){
-            // console.log('Buscamos DB id')
-            let pokemon = await Pokemon.findOne({where:{id},include:Type})
-            pokemon = {
-                id:pokemon.id,
-                name:pokemon.name,
-                life:pokemon.life,
-                strong:pokemon.strong,
-                defense:pokemon.defense,
-                speed:pokemon.speed,
-                height:pokemon.height,
-                weight:pokemon.weight,
-                img:pokemon.img,
-                types:pokemon.types.map(t=>t.name)
+    try {
+        const { id } = req.params;
+        const { name } = req.query;
+        console.log('Aqui name', name)
+        console.log('Aqui id', id)
+        if (id && id) {
+            const data = await getPokeApiFetch(id);
+            if (data === 'Not found') {
+                console.log('Buscamos DB id')
+                res.send(await getPokemonIdDB(id));
             }
-            return res.send(pokemon);
+            return res.send(data);
         }
-        return res.send(data);
-    }
-    if(name && name){
-        // console.log('entra en if name',name)
-        const data = await getPokeApiFetch(name);
-        if(data ==='Not found'){
-            // console.log('Buscamos DB name')
-            let pokemon = await Pokemon.findOne({where:{name},include:Type})
-            pokemon = {
-                id:pokemon.id,
-                name:pokemon.name,
-                life:pokemon.life,
-                strong:pokemon.strong,
-                defense:pokemon.defense,
-                speed:pokemon.speed,
-                height:pokemon.height,
-                weight:pokemon.weight,
-                img:pokemon.img,
-                types:pokemon.types.map(t=>t.name)
+        if (name && name) {
+            console.log('entra en if name', name)
+            const data = await getPokeApiFetch(name);
+            if (data === 'Not found') {
+                console.log('Buscamos DB name')
+                res.send(await getPokemonNameDB(name));
+                return res.send(pokemon);
             }
-            // console.log(pokemon)
-            return res.send(pokemon);
+            return res.send(data);
         }
-        return res.send(data);
+        await getFirst12(req, res)
+    } catch (error) {
+        console.error(error);
+        if (error instanceof TypeError) {
+            res.send('No se encontro pokemon');
+        }
     }
-    
-    await getFirst12(req,res)
-
 }
 /**********************************************************/
 /*                  Fetch API: ID y Name                  */
@@ -68,8 +46,7 @@ const getPokemonApi = async (req, res) => {
 /*            Devuelve not found o el pokemons            */
 /**********************************************************/
 const getPokeApiFetch = async (argument) => {
-    console.log('getTypesLoadDB')
-
+    // console.log('getTypesLoadDB')
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${argument}`);
     if (response.status === 404) {
         // console.log('Entra en el if')
@@ -89,11 +66,13 @@ const getPokeApiFetch = async (argument) => {
         defense: stats[2].base_stat,
         speed: stats[5].base_stat,
         img: sprites.other['official-artwork'].front_default
-
     }
     return data;
 }
-
+/**********************************************************/
+/*            Consulta y Carga los TYPES en DB            */
+/*Devuelve solo datos necesarios de 12 para ruta principal*/
+/**********************************************************/
 const getTypesLoadDB = async (req, res) => {
     console.log('getTypesLoadDB')
     const response = await fetch(`https://pokeapi.co/api/v2/type`);
@@ -107,13 +86,11 @@ const getTypesLoadDB = async (req, res) => {
         })
     });
     res.send(typeNames)
-
 }
-/*********************************************************/
-/*Consulta get principal*/
-/*Devuelve solo datos necesarios de 12 para ruta principal     */
-/*********************************************************/
-
+/**********************************************************/
+/*                Consulta get principal                  */
+/*Devuelve solo datos necesarios de 12 para ruta principal*/
+/**********************************************************/
 const getFirst12 = async (req, res) => {
     try {
         const data = []
@@ -124,7 +101,7 @@ const getFirst12 = async (req, res) => {
                 types,
                 img
             };
-            
+
             data.push(date);
         }
         res.send(data);
@@ -132,38 +109,46 @@ const getFirst12 = async (req, res) => {
         console.error(error);
     }
 }
-
+/*********************************************************/
+/*               Consulta la DB por ID                   */
+/*     Devuelve pokemon si lo encuentra / Not found      */
+/*********************************************************/
+const getPokemonIdDB = async (search) => {
+    try {
+        const {
+            id, name, life, strong, defense, speed, height, weight, img, types
+        } = await Pokemon.findOne({ where: { id: search }, include: Type })
+        const pokemon = {
+            id, name, life, strong, defense, speed, height, weight, img,
+            types: types.map(t => t.name)
+        }
+        return pokemon;
+    } catch (error) {
+        return 'Not found'
+    }
+}
+/*********************************************************/
+/*               Consulta la DB por Nombre               */
+/*     Devuelve pokemon si lo encuentra / Not found      */
+/*********************************************************/
+const getPokemonNameDB = async (search) => {
+    console.log('Entre en getPokemonNameDB');
+    try {
+        const {
+            id, name, life, strong, defense, speed, height, weight, img, types
+        } = await Pokemon.findOne({ where: { name: search }, include: Type })
+        const pokemon = {
+            id, name, life, strong, defense, speed, height, weight, img,
+            types: types.map(t => t.name)
+        }
+        return pokemon;
+    } catch (error) {
+        return 'Not found'
+    }
+}
 
 module.exports = {
     getFirst12,
     getTypesLoadDB,
     getPokemonApi,
 }
-// const getPokeApiName = async (req, res) => {
-//     const { name } = req.body;
-//     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-//     const { height, weight, stats, types, sprites } = await response.json();
-//     const data = {
-//         id,
-//         name,
-//         types: types.map(({ type }) => type.name),
-//         height,
-//         weight,
-//         life:stats[0].base_stat,
-//         strength:stats[1].base_stat,
-//         defense:stats[2].base_stat,
-//         speed:stats[5].base_stat,
-//         img: sprites.other['official-artwork'].front_default
-//     }
-// }
-/**********************************************************/
-/*                  Consulta: ID                          */
-/*            Devuelve not found o el pokemons            */
-/**********************************************************/
-// const getPokeApiId = async (req, res) => {
-//     console.log('Linea 1', req.params.id)
-//     const { id } = req.params
-//     const data = await getPokeApiFetch(id)
-//     // console.log('Linea 4',data)
-//     res.send(data)
-// }
