@@ -34,8 +34,8 @@ export function getAllTypes() {
 export function getPokemon(name) {
     return async function (dispatch) {
         const response = await fetch(`http://localhost:3001/pokemons?name=${name}`);
-        const data = await response.json()
-        console.log('Linea', data)
+        const data = await response.json();
+        console.log('data en pokemonsActios.js', data)
         return dispatch({
             type: GET_POKEMON,
             payload: data

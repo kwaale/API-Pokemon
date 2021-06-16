@@ -7,7 +7,7 @@ const initialState ={
 }
 
 const reducer = (state = initialState, action) =>{
-    console.log('Entra en reducer state', state, 'action.type' ,action.type);
+    // console.log('Entra en reducer state', state, 'action.type' ,action.type);
     switch(action.type){
         case GET_POKEMONS_12:
         return{
