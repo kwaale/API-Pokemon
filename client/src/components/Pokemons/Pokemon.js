@@ -9,6 +9,7 @@ const Pokemon = ({ name, types, img }) => {
             .map(v => v[0].toUpperCase() + v.substr(1))
             .join(' ');
     }
+
     return (
         <div className='card-pokemon'>
             <h1>{capitalize(name)}</h1>
