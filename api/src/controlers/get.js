@@ -14,8 +14,19 @@ const getPokemonApi = async (req, res) => {
         const { id } = req.params;
         const { name, skip, limit, ord } = req.query;
         //Obtiene cualquier ordenamiento, por cantidad
+        
+        console.log('name',name)
+        console.log('skip',skip)
+        console.log('limit',limit)
+        console.log('ord',ord)
         if (typeof (skip) !== "undefined" && typeof (limit) !== "undefined" && typeof (ord) !== "undefined") {
+            console.log('Entra en getPokemonApi IF')
             const data = await getOrdenamiento(skip, limit, ord);
+            res.send(data)
+        }
+        //Paginacion
+        if (typeof (skip) !== "undefined" && typeof (limit) !== "undefined"){
+            const data = await getOrdenamiento(skip, limit);
             res.send(data)
         }
         //Obtiene uno por ID
@@ -30,11 +41,12 @@ const getPokemonApi = async (req, res) => {
         //Obtiene uno por NAME
         if (name && name) {
             console.log('entra en if name', name)
-            const data = await getPokeApiFetch(name);
+            const data = await getPokeApiFetch(name.toLowerCase());
+            console.log('Buscamos DB name')
             if (data === 'Not found') {
-                console.log('Buscamos DB name')
-                res.send(await getPokemonNameDB(name));
-                return res.send(pokemon);
+                // console.log('Buscamos DB name',await getPokemonNameDB(name.toLowerCase()))
+                res.send(await getPokemonNameDB(name.toLowerCase()));
+                
             }
             return res.send(data);
         }
@@ -54,7 +66,7 @@ const getPokeApiFetch = async (argument) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${argument}`);
     if (response.status === 404) {
         // console.log('Entra en el if')
-        const data = ['Not found'];
+        const data = 'Not found';
         return data;
     }
     const { id, name, height, weight, stats, types, sprites } = await response.json();
@@ -113,10 +125,10 @@ const getPokeApiFetchSkipLimit = async (skip, limit) => {
 const getPokemonIdDB = async (search) => {
     try {
         const {
-            id, name, life, strong, defense, speed, height, weight, img, types
+            id, name, life, strength, defense, speed, height, weight, img, types
         } = await Pokemon.findOne({ where: { id: search }, include: Type })
         const pokemon = {
-            id, name, life, strong, defense, speed, height, weight, img,
+            id, name, life, strength, defense, speed, height, weight, img,
             types: types.map(t => t.name)
         }
         return pokemon;
@@ -129,18 +141,21 @@ const getPokemonIdDB = async (search) => {
 /*     Devuelve pokemon si lo encuentra / Not found      */
 /*********************************************************/
 const getPokemonNameDB = async (search) => {
-    console.log('Entre en getPokemonNameDB');
+    console.log('Entre en getPokemonNameDB',search);
     try {
         const {
-            id, name, life, strong, defense, speed, height, weight, img, types
+            id, name, life, strength, defense, speed, height, weight, img, types
         } = await Pokemon.findOne({ where: { name: search }, include: Type })
+    console.log('Paso 2',name);
+
         const pokemon = {
-            id, name, life, strong, defense, speed, height, weight, img,
+            id, name, life, strength, defense, speed, height, weight, img,
             types: types.map(t => t.name)
         }
         return pokemon;
     } catch (error) {
-        return 'Not found'
+        console.log(error)
+        return {name:'Pokemon not found'}
     }
 }
 

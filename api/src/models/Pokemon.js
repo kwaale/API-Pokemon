@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    strong:{
+    strength:{
       type: DataTypes.STRING,
       allowNull: true,
     },

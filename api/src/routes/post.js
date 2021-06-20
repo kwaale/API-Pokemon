@@ -10,12 +10,13 @@ const router = Router();
 console.log('Pasa post.js')
 router.post('/create', async (req, res) => {
     console.log('Req.body',req.body)
-    const { name, life, types, strong, defense, speed, height, weight, img } = req.body;
+    const name = req.body.name.toLowerCase();
+    const { life, types, strength, defense, speed, height, weight, img } = req.body;
     const [pokemon] = await Pokemon.findOrCreate({
         where:{
             name
         },
-        defaults: { name, life, strong, defense, speed, height, weight, img },
+        defaults: { name, life, strength, defense, speed, height, weight, img },
     });
     types.forEach(async (name)=>{
         const [type] = await Type.findOrCreate({
