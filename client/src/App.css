@@ -16,8 +16,9 @@
 body{
   background: cadetblue;
   background-image: url("img/pokeball.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-repeat: round;
+  background-size: contain;
+  background-attachment: fixed;
 }
 
 .App-header {

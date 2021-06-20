@@ -1,38 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import Pokemon from './Pokemon';
-// import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import { getPokemons_12 } from '../../store/actions/pokemonActions';
+import { getPokemons, getPokemonPagination, getPokemonFilter } from '../../store/actions/pokemonActions';
 import { useLocation, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
-const Pokemons = ({ getPokemons_12, pokemons }) => {
+const Pokemons = ({ getPokemons, getPokemonPagination, getPokemonFilter, pokemons }) => {
     const location = useLocation();
     const history = useHistory();
     const query = new URLSearchParams(location.search);
-    const skip = parseInt(query.get('skip')) || 0;
-    const limit = parseInt(query.get('limit')) || 12;
+    const skip = parseInt(query.get('skip')) || 12;
+    const limit = parseInt(query.get('limit')) || 40;
 
     useEffect(() => {
         console.log('A dentro de useEffect')
-        // getPokemons_12()
+        getPokemons()
     }, []);
     const handlePevious = () =>{
         if(skip > 0){
             query.set('skip', skip - limit);
-        query.set('limit', limit);
+            query.set('limit', limit);
             history.push({search: query.toString()})
+            getPokemonPagination(skip, limit)
         }
     }
     const handleNext = () =>{
         query.set('skip', skip + limit);
         query.set('limit', limit);
         history.push({search: query.toString()})
+        console.log(skip, limit)
+        getPokemonPagination(skip, limit)
     }
     const handleChange = (e)=>{
-        query.set('ORD', e.target.value);
+        const ord = e.target.value
+        query.set('ord', ord);
         history.push({search: query.toString()})
+        const limit = query.get('limit')
+        const skip = query.get('skip')
+        
+        getPokemonFilter(skip, limit, ord)
     }
    
     return (
@@ -44,22 +52,26 @@ const Pokemons = ({ getPokemons_12, pokemons }) => {
                     <option value='asdf'>Ascendente por Fuerza</option>
                     <option value='desf'>Descendente por Fuerza</option>
                 </select>
-    
+                <button onClick={handlePevious}>Pevious</button>
+            <button onClick={handleNext}>Next</button>
+            
+    <div className='cont-pokemon-search'>
             {
                 pokemons.length === 0 ? <h2>Cargando pokemons...</h2> : pokemons.map(pokemon => {
                     return (
-                        <Pokemon
+                        <NavLink to={`/pokemons/${pokemon.id}`}>
+                            <Pokemon
                             key={pokemon.name}
                             name={pokemon.name}
                             types={pokemon.types}
                             img={pokemon.img}
                         />
+                        </NavLink>
                     )
                 })
             }
-            <button onClick={handlePevious}>Pevious</button>
-            <button onClick={handleNext}>Next</button>
-
+    </div>
+            
         </div>
         
 
@@ -72,8 +84,11 @@ const mapStateToProps = state => {
     }
 }
 const mapDispatchToProps = dispatch => {
+    console.log('Paginacion')
     return {
-        getPokemons_12: () => dispatch(getPokemons_12()),
+        getPokemons: () => dispatch(getPokemons()),
+        getPokemonPagination: (skip, limit)=> dispatch(getPokemonPagination(skip, limit)),
+        getPokemonFilter:(skip, limit, ord)=>dispatch(getPokemonFilter(skip, limit, ord))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Pokemons);

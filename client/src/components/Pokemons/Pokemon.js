@@ -1,7 +1,7 @@
 import React from 'react'
 import './Pokemons.css';
 
-const Pokemon = ({ name, types, img }) => {
+const Pokemon = ({ id, name, types, img }) => {
     const capitalize = (val) => {
         return val.toLowerCase()
             .trim()
@@ -13,8 +13,9 @@ const Pokemon = ({ name, types, img }) => {
     return (
         <div className='card-pokemon'>
             <h1>{capitalize(name)}</h1>
-            {types.map(t => <h4>{capitalize(t)}</h4>)}
+            {types && types.map(t => <h4>{capitalize(t)}</h4>)}
             <img className='image' src={img} />
+        
         </div>
     )
 }

@@ -6,7 +6,7 @@ const FormCreaPokemon = ({ getAllTypes, types }) => {
     useEffect(() => {
         getAllTypes()
     }, []);
-    const initialStateForm = {name: '', life: '', strong: '', defense: '', speed: '',
+    const initialStateForm = {name: '', life: '', strength: '', defense: '', speed: '',
     height: '', weight: '', types: [], img: ''}
     const [formState, setFormState] = useState(initialStateForm);
     const handleChange = (e) => {
@@ -61,7 +61,7 @@ const FormCreaPokemon = ({ getAllTypes, types }) => {
                 <dt><label>Vida:</label>
                     <input placeholder='Vida...' name='life' onChange={handleChange} value={formState.life}></input></dt>
                 <dt><label>Fuerza:</label>
-                    <input placeholder='Fuerza...' name='strong' onChange={handleChange} value={formState.strong}></input></dt>
+                    <input placeholder='Fuerza...' name='strength' onChange={handleChange} value={formState.strength}></input></dt>
                 <dt><label>Defensa:</label>
                     <input placeholder='Defensa...' name='defense' onChange={handleChange} value={formState.defense}></input></dt>
                 <dt><label>Velocidad:</label>

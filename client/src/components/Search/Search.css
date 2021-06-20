@@ -1,0 +1,6 @@
+.cont-pokemon-search{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: -moz-center;
+}

@@ -1,6 +1,7 @@
 .card-pokemon{
     background: yellow;
-    width: 40%;
+    min-width: 200px;
+    width: 33%;
     height: auto;
     border-radius: 10%;
     border: solid 2px;
@@ -10,4 +11,10 @@
 .image{
     width: 50%;
     height: auto;
+}
+.pokemon-content{
+    /* background: blue; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
