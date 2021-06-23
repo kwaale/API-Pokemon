@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { Type } = require('../db');
+const { Type, Pokemon } = require('../db');
 const { URL_TYPES } = require('../constants');
 
 /**********************************************************/
@@ -23,14 +23,32 @@ const getTypesLoadDB = async (req, res) => {
     res.send(types)
 }
 /**********************************************************/
+/*             Consulta por types en API y DB             */
+/*               Devuelve array de pokemones              */
+/**********************************************************/
+const getPokemonsTypes = async(req, res)=>{
+    try {
+        const { type } = req.params;
+        const pokemonsApi = await getTypesPokemonsApi(type);
+        const pokemonsDB = await getTypesPokemonsDB(type);
+        res.send(pokemonsDB.concat(pokemonsApi))
+        
+    } catch (error) {
+        console.log('++++++++ERROR++++++++')
+        console.error(error)
+        console.log('++++++++ERROR++++++++')
+    }
+}
+
+
+
+
+/**********************************************************/
 /*               Consulta por types en API                */
 /*               Devuelve array de pokemones              */
 /**********************************************************/
-//Trae pokemones por tipo
-const getTypesPokemons = async (req, res) => {
+const getTypesPokemonsApi = async (type) => {
     try {
-        const { type } = req.params;
-        console.log('getTypesLoadDB Q',type)
         const response = await fetch(URL_TYPES);
         const data = await response.json();
         const {url} = data.results.find(result => result.name === type);
@@ -53,15 +71,43 @@ const getTypesPokemons = async (req, res) => {
             }
             return data;
         }))
-        res.send(pokemons)
+        return(pokemons)
     } catch (error) {
         console.log('++++++++ERROR++++++++')
         console.error(error)
         console.log('++++++++ERROR++++++++')
     }
 }
-
+/**********************************************************/
+/*               Consulta por types en DB                */
+/*               Devuelve array de pokemones              */
+/**********************************************************/
+const getTypesPokemonsDB = async (type) => {
+    try {
+        const data = await Type.findOne({
+            where:{name:type},
+            include:Pokemon,
+            }
+        )
+        const ids = data.pokemons.map(d=>d.id)
+        const pokemons = await Promise.all(ids.map( async id =>{
+             const {
+                name,life,strength,defense,speed,height,weight,img,types
+             } = await Pokemon.findByPk(id,{include:Type})
+             const obj = {
+                id,name,life,strength,defense,speed,height,weight,img,
+                types:types.map(t=>t.name)
+             }
+             return obj;
+            }));
+        return pokemons;
+    } catch (error) {
+        console.log('++++++++ERROR++++++++')
+        console.error(error)
+        console.log('++++++++ERROR++++++++')
+    }
+}
 module.exports = {
     getTypesLoadDB,
-    getTypesPokemons
+    getPokemonsTypes
 }

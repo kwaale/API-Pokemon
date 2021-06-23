@@ -7,6 +7,7 @@ const Nav = ()=>{
             <NavLink to='/'>Inicio </NavLink>
             <NavLink to='/pokemons'>Home </NavLink>
             <NavLink to='/pokemons/create'>Crear Pokemons </NavLink>
+            <NavLink to='/types'>Tipos </NavLink>
         </div>
     )
 }

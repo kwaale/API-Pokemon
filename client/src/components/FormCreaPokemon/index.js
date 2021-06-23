@@ -7,7 +7,7 @@ const FormCreaPokemon = ({ getAllTypes, types }) => {
         getAllTypes()
     }, []);
     const initialStateForm = {name: '', life: '', strength: '', defense: '', speed: '',
-    height: '', weight: '', types: [], img: ''}
+    height: '', weight: '', types: [], img: '', create:false}
     const [formState, setFormState] = useState(initialStateForm);
     const handleChange = (e) => {
         e.preventDefault()
@@ -33,7 +33,9 @@ const FormCreaPokemon = ({ getAllTypes, types }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         postPokemon()
-        setFormState(initialStateForm)
+        setFormState({...initialStateForm,
+            create:true
+            })
     }
     const postPokemon = async() => {
         await fetch('http://localhost:3001/pokemons/create',{
@@ -89,6 +91,8 @@ const FormCreaPokemon = ({ getAllTypes, types }) => {
                     <input placeholder='Peso...' name='img' onChange={handleChange}></input></dt> */}
 
                 <dt><button type='onSubmit'>Submit</button></dt>
+                {formState.create && <h1>Pokemon Creado</h1>}
+                
             </form>
         </div>
     )
