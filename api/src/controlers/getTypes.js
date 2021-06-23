@@ -7,7 +7,7 @@ const { URL_TYPES } = require('../constants');
 /*               Devuelve solo array types                */
 /**********************************************************/
 const getTypesLoadDB = async (req, res) => {
-    console.log('getTypesLoadDB Q')
+    // console.log('getTypesLoadDB Q')
     const response = await fetch(URL_TYPES);
     const data = await response.json();
     const typeNames = data.results.map(({ name }) => name);

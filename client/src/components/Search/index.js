@@ -13,7 +13,7 @@ const Search = ({getPokemonName, pokemon }) => {
     const name = query.get('name')
     useEffect(() => {
         if (name !== null) {
-            console.log('If useEffec name', name)
+            // console.log('If useEffec name', name)
             getPokemonName(name)
         }
 
@@ -61,7 +61,7 @@ const Search = ({getPokemonName, pokemon }) => {
     )
 }
 const mapStateToProps = (state) => {
-    console.log('mapStateToProps = state', state)
+    // console.log('mapStateToProps = state', state)
     return {
         pokemon: state.pokemon
     }

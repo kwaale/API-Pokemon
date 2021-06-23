@@ -12,16 +12,16 @@ const PokemonDetail = ({ pokemon, getPokemonId }) => {
     //         .map(v => v[0].toUpperCase() + v.substr(1))
     //         .join(' ');
     // }
-    console.log('pokemon.name')
+    // console.log('pokemon.name')
     const { id } = useParams();
     // llega el parametro
-    console.log('ID Params', id)
+    // console.log('ID Params', id)
     // getPokemonName(id);
     useEffect(() => {
-        console.log('PokemonDetail useEffect(()')
+        // console.log('PokemonDetail useEffect(()')
         getPokemonId(id)
     }, [])
-    console.log('POKEMON', pokemon.name)
+    // console.log('POKEMON', pokemon.name)
 
     return (
         <div className='cont-pokemon-search'>
@@ -43,7 +43,7 @@ const PokemonDetail = ({ pokemon, getPokemonId }) => {
     )
 }
 const mapStateToProps = (state) => {
-    console.log('Estado de PokemonDetail: estado', state)
+    // console.log('Estado de PokemonDetail: estado', state)
     return {
         pokemon: state.pokemon
     }

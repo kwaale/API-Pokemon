@@ -17,36 +17,36 @@ const Pokemons = ({ getPokemons, getPokemonPagination, getPokemonFilter, getPoke
     const location = useLocation();
     const history = useHistory();
     const params = useParams();
-    console.log( 'params.skip',params.type)
+    // console.log( 'params.skip',params.type)
     const query = new URLSearchParams(location.search);
-    const skip = parseInt(query.get('skip')) || 12;
+    const skip = parseInt(query.get('skip')) || 40;
     const limit = parseInt(query.get('limit')) || 40;
-    console.log('Afuera useEffect', pokemons)
+    // console.log('Afuera useEffect', pokemons)
 
     useEffect(() => {
-        console.log('A dentro de useEffect',params.type)
-        if(params.type) getPokemonsType(params.type)
+        // console.log('A dentro de useEffect',params.type)
+        if (params.type) getPokemonsType(params.type)
         else getPokemons()
-    },[]);
-    const handlePevious = () =>{
-        if(skip > 0){
+    }, []);
+    const handlePevious = () => {
+        if (skip > 0) {
             query.set('skip', skip - limit);
             query.set('limit', limit);
-            history.push({search: query.toString()})
+            history.push({ search: query.toString() })
             getPokemonPagination(skip, limit)
         }
     }
-    const handleNext = () =>{
+    const handleNext = () => {
         query.set('skip', skip + limit);
         query.set('limit', limit);
-        history.push({search: query.toString()})
-        console.log(skip, limit)
+        history.push({ search: query.toString() })
+        // console.log(skip, limit)
         getPokemonPagination(skip, limit)
     }
-    const handleChange = (e)=>{
+    const handleChange = (e) => {
         const ord = e.target.value
         query.set('ord', ord);
-        history.push({search: query.toString()})
+        history.push({ search: query.toString() })
         const limit = query.get('limit')
         const skip = query.get('skip')
         getPokemonFilter(skip, limit, ord)
@@ -66,60 +66,58 @@ const Pokemons = ({ getPokemons, getPokemonPagination, getPokemonFilter, getPoke
         }
 
     }
-   
+
     return (
         <div>
             <h4>Ordena Pokemones</h4>
-                <select name='types' onChange={handleChange}>
-                    <option value='asda'>Ascendente Alfabeticamente</option>
-                    <option value='desa'>Descendente Alfabeticamente</option>
-                    <option value='asdf'>Ascendente por Fuerza</option>
-                    <option value='desf'>Descendente por Fuerza</option>
-                </select>
-            
-                <button onClick={handleClick} name='asd'>Nombre Ascendente</button>
-                <button onClick={handleClick} name='des'>Nombre Descendente</button>
-    <div className='cont-pokemon-search'>
-            {
-                pokemons.length === 0 ? <h2>Cargando pokemons...</h2> : pokemons.map(pokemon => {
-                    return (
-                        <NavLink to={`/pokemons/${pokemon.id}`}>
-                            <Pokemon
-                            key={pokemon.name}
-                            name={pokemon.name}
-                            types={pokemon.types}
-                            img={pokemon.img}
-                        />
-                        </NavLink>
-                    )
-                })
-            }
-    </div>
-            
-    <button onClick={handlePevious}>Pevious</button>
-<button onClick={handleNext}>Next</button>
+            <select name='types' onChange={handleChange}>
+                {/* <option value='asda'>Ascendente Alfabeticamente</option>
+                    <option value='desa'>Descendente Alfabeticamente</option> */}
+                <option value='asdf'>Ascendente por Fuerza</option>
+                <option value='desf'>Descendente por Fuerza</option>
+            </select>
+
+            <button onClick={handleClick} name='asd'>Nombre Ascendente</button>
+            <button onClick={handleClick} name='des'>Nombre Descendente</button>
+            <div className='cont-pokemon-search'>
+                {
+                    pokemons.length === 0 ? <h2>Cargando pokemons...</h2> : pokemons.map(pokemon => {
+                        return (
+                            <NavLink to={`/pokemons/${pokemon.id}`}>
+                                <Pokemon
+                                    key={pokemon.name}
+                                    name={pokemon.name}
+                                    types={pokemon.types}
+                                    img={pokemon.img}
+                                />
+                            </NavLink>
+                        )
+                    })
+                }
+            </div>
+
+            <button onClick={handlePevious}>Pevious</button>
+            <button onClick={handleNext}>Next</button>
         </div>
-        
-        
-        )
-    }
+
+
+    )
+}
 const mapStateToProps = state => {
-    console.log('mapStateToProps state', state)
+    // console.log('mapStateToProps state', state)
     return {
         pokemons: state.pokemons
     }
 }
 const mapDispatchToProps = dispatch => {
-    console.log('Paginacion')
+    // console.log('Paginacion')
     return {
         getPokemons: () => dispatch(getPokemons()),
-        getPokemonPagination: (skip, limit)=> dispatch(getPokemonPagination(skip, limit)),
-        getPokemonFilter:(skip, limit, ord)=>dispatch(getPokemonFilter(skip, limit, ord)),
-        getPokemonsType:(type)=>dispatch(getPokemonsType(type)),
-        getOrderAsdName:(pokemons)=>dispatch(getOrderAsdName(pokemons)),
-        getOrderDesName:(pokemons)=>dispatch(getOrderDesName(pokemons)),
-        
-        
+        getPokemonPagination: (skip, limit) => dispatch(getPokemonPagination(skip, limit)),
+        getPokemonFilter: (skip, limit, ord) => dispatch(getPokemonFilter(skip, limit, ord)),
+        getPokemonsType: (type) => dispatch(getPokemonsType(type)),
+        getOrderAsdName: (pokemons) => dispatch(getOrderAsdName(pokemons)),
+        getOrderDesName: (pokemons) => dispatch(getOrderDesName(pokemons)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Pokemons);

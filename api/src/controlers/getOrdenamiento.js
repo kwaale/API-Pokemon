@@ -5,10 +5,10 @@ const { response } = require('express');
 const { BASIC_URL_POKEMON } = require('../constants');
 
 const getOrdenamiento = async (skip, limit, ord='asda') => {
-    console.log('Ruta getOrdenamiento')
-    console.log('skip', skip)
-    console.log('limit', limit)
-    console.log('ord', ord)
+    // console.log('Ruta getOrdenamiento')
+    // console.log('skip', skip)
+    // console.log('limit', limit)
+    // console.log('ord', ord)
     //Ascendente Alfabeticamente
     if (ord === 'asda') {
         const pokemons = await getPokeApiFetchSkipLimit(skip, limit)

@@ -15,7 +15,7 @@ export const GET_ORDER_DESCENDENTE = 'GET_ORDER_DESCENDENTE';
 
 export function getPokemons() {
     return async function (dispatch) {
-        console.log('Linea')
+        // console.log('Linea')
         const response = await fetch('http://localhost:3001/pokemons');
         const data = await response.json();
         return dispatch({
@@ -27,7 +27,7 @@ export function getPokemons() {
 }
 export function getAllTypes() {
     return async function (dispatch) {
-        console.log('Linea')
+        // console.log('Linea')
         const response = await fetch('https://pokeapi.co/api/v2/type');
         const { results } = await response.json();
         const types = results.map(t => t.name);
@@ -62,11 +62,12 @@ export function getPokemonId(id) {
 }
 
 export function getPokemonPagination(skip, limit) {
+    console.log('Paginado', skip,limit)
     return async function (dispatch) {
         const response = await fetch(`http://localhost:3001/pokemons?skip=${skip}&limit=${limit}`);
         const data = await response.json();
 
-        console.log('data en pokemonsActios.js', data)
+        // console.log('data en pokemonsActios.js', data)
         return dispatch({
             type: GET_POKEMONS_PAGINATIONS,
             payload: data
@@ -75,11 +76,11 @@ export function getPokemonPagination(skip, limit) {
 
 }
 export function getPokemonFilter(skip, limit, ord) {
-    console.log('*****skip, limit, ord', skip, limit, ord)
+    // console.log('*****skip, limit, ord', skip, limit, ord)
     return async function (dispatch) {
         const response = await fetch(`http://localhost:3001/pokemons?skip=${skip}&limit=${limit}&ord=${ord}`);
         const data = await response.json();
-        console.log('LINEA', data[0])
+        // console.log('LINEA', data[0])
 
         return dispatch({
             type: GET_POKEMONS_FILTER,
@@ -89,11 +90,11 @@ export function getPokemonFilter(skip, limit, ord) {
 
 }
 export function getTypes() {
-    console.log('*****getTypes')
+    // console.log('*****getTypes')
     return async function (dispatch) {
         const response = await fetch(`http://localhost:3001/types`);
         const data = await response.json();
-        console.log('LINEA', data[0])
+        // console.log('LINEA', data[0])
 
         return dispatch({
             type: GET_TYPES,
@@ -103,11 +104,11 @@ export function getTypes() {
 
 }
 export function getPokemonsType(type) {
-    console.log('*****skip, limit, ord', type)
+    // console.log('*****skip, limit, ord', type)
     return async function (dispatch) {
         const response = await fetch(`http://localhost:3001/types/${type}`);
         const data = await response.json();
-        console.log('LINEA', data[0])
+        // console.log('LINEA', data[0])
 
         return dispatch({
             type: GET_POKEMONS_TYPE,
