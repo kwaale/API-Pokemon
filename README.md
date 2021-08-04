@@ -1,31 +1,3 @@
-ZAPATILLA TOPPER ULTRALIGHT II
-
-Descripcion: ULTRALIGHT II Una propuesta de training ultra liviana que quieren hacer deporte sin sentir el calzado en sus pies.
-capellada: de mesh con cartera de ojal y talonera de cuero sintetico con costura zig zag.
-suela: de eva tgxy blanca.
-
-Imagenes
-https://www.puntodeportivo.com.ar/wp-content/uploads/2020/11/01052511-600x600.jpg
-https://www.puntodeportivo.com.ar/wp-content/uploads/2020/11/01052511_1-600x600.jpg
-
-
-
-ZAPATILLA FILA ATTRACTIVE
-
-Las zapatillas Fila ATTRACTIVE es ideal para entrenamientos livianos. La capellada de mesh de trama diferenciada favorece la circulacion de aire. El sistema de ajuste Slip-On ayuda a que tenga un calce comodo. Su entresuela con tecnologia energized
-
-https://www.puntodeportivo.com.ar/wp-content/uploads/2020/11/23911056-600x600.jpg
-https://www.puntodeportivo.com.ar/wp-content/uploads/2020/11/23911056_1-600x600.jpg
-
-
-ZAPATILLA CONVERSE EL DISTRITO 2.0
-https://www.puntodeportivo.com.ar/wp-content/uploads/2021/03/90167008-600x600.jpg
-https://www.puntodeportivo.com.ar/wp-content/uploads/2021/03/90167008_1-600x600.jpg
-
-Tus sneakers favoritas, ahora más resistentes.
-El acolchado adicional en la lengüeta y el forro aguantan con el tiempo, aportando una textura a unas zapatillas a las que no querrás renunciar.
-
-
 # Individual Project - Henry Pokemon
 
 <p align="left">
